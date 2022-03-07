@@ -1,0 +1,152 @@
+Sub CrearCarpeta()
+    Dim hvi As String
+    Dim hvi2 As String
+    Dim ruta As String
+    Dim ruta2 As String
+    Dim cliente As String
+    Dim sSeparadorRuta As String
+    On Error GoTo hojacreada
+    
+    sSeparadorRuta = Application.PathSeparator
+    cliente = Range("B3").Value
+    ruta = "J:\IDIADA\ES\HQ\KP04A_HomCV\Internal\02_AUTOBUSES\R118\Clientes"
+    hvi = Range("c7").Value
+    hvi2 = Replace(hvi, "/", "_")
+    ruta2 = "J:\IDIADA\ES\HQ\KP04A_HomCV\Internal\02_AUTOBUSES\R118"
+    
+    MkDir (ruta & sSeparadorRuta & cliente & sSeparadorRuta & hvi2)
+    MkDir (ruta & sSeparadorRuta & cliente & sSeparadorRuta & hvi2 & sSeparadorRuta & "Fotos")
+    FileCopy ruta2 & "\HE_R118.02.docx", ruta & sSeparadorRuta & cliente & sSeparadorRuta & hvi2 & sSeparadorRuta & "HE_" & hvi2 & ".docx"
+    MsgBox "Hoja de ensayo creada", vbInformation, "DURAN INFORMA"
+    Exit Sub
+    
+hojacreada:
+    MsgBox "EMPANAO!, la hoja de ensayo ya está creada", vbInformation, "LA HAS LIADO"
+    
+    
+End Sub
+
+
+Sub abrirhoja()
+
+    Dim Filel As Object
+    Dim hvi As String
+    Dim hvi2 As String
+    Dim ruta As String
+    Dim ruta2 As String
+    Dim cliente As String
+    Dim sSeparadorRuta As String
+    On Error GoTo Errores
+    
+    hvi = Range("c7").Value
+    hvi2 = Replace(hvi, "/", "_")
+    sSeparadorRuta = Application.PathSeparator
+    cliente = Range("B3").Value
+    ruta = "J:\IDIADA\ES\HQ\KP04A_HomCV\Internal\02_AUTOBUSES\R118\clientes"
+    
+Set Filel = CreateObject("word.Application")
+Filel.documents.Open ruta & sSeparadorRuta & cliente & sSeparadorRuta & hvi2 & sSeparadorRuta & "HE_" & hvi2 & ".docx"
+Filel.Visible = True
+Set Filel = Nothing
+    Exit Sub
+    
+Errores:
+    MsgBox "DESPIERTA!, no has creado ninguna hoja de ensayo.", vbInformation, "LA HAS LIADO"
+
+
+
+End Sub
+
+
+Sub subir_fotos()
+        
+    Dim hvi As String
+    Dim hvi2 As String
+    Dim ruta As String
+    Dim ruta2 As String
+    Dim cliente As String
+    Dim sSeparadorRuta As String
+    On Error GoTo Errores2
+    
+    
+    
+    hvi = Range("c7").Value
+    hvi2 = Replace(hvi, "/", "_")
+    sSeparadorRuta = Application.PathSeparator
+    cliente = Range("B3").Value
+    ruta = "J:\IDIADA\ES\HQ\KP04A_HomCV\Internal\02_AUTOBUSES\R118\clientes" & sSeparadorRuta & cliente & sSeparadorRuta & hvi2 & sSeparadorRuta & "fotos"
+    
+    Shell "explorer.exe" & " " & ruta, vbNormalFocus
+    
+    Exit Sub
+Errores2:
+    MsgBox "ESPAVILA! no has creado la ruta de ensayo", vbInformation, "LA HAS LIADO"
+
+    
+End Sub
+
+
+Sub abrir_ruta()
+        
+    Dim hvi As String
+    Dim hvi2 As String
+    Dim ruta As String
+    Dim ruta2 As String
+    Dim cliente As String
+    Dim sSeparadorRuta As String
+    On Error GoTo Errores3
+    
+    
+    
+    hvi = Range("c7").Value
+    hvi2 = Replace(hvi, "/", "_")
+    sSeparadorRuta = Application.PathSeparator
+    cliente = Range("B3").Value
+    ruta = "J:\IDIADA\ES\HQ\KP04A_HomCV\Internal\02_AUTOBUSES\R118\clientes" & sSeparadorRuta & cliente & sSeparadorRuta & hvi2
+    
+    Shell "explorer.exe" & " " & ruta, vbNormalFocus
+
+    Exit Sub
+Errores3:
+    MsgBox "NOOOOOOOOOO! no has creado la ruta de ensayo", vbInformation, "LA HAS LIADO"
+    
+End Sub
+
+
+
+
+Sub EnviarEmail()
+    '
+    ' Declaramos variables
+    '
+    Dim OutlookApp As Outlook.Application
+    Dim MItem As Outlook.MailItem
+    Dim cell As Range
+    Dim Asunto As String
+    Dim Correo As String
+    Dim Correo2 As String
+    Dim Destinatario As String
+    Dim Msg As String
+        '
+        Set OutlookApp = New Outlook.Application
+        
+            Asunto = "Nuevas muestras planificadas"
+            Correo = "alvaro.alegre@idiada.com;gerard.benedico@idiada.com"
+            Correo2 = "josepmaria.valles@idiada.com"
+            '
+            'Cuerpo del mensaje
+            '
+            Msg = "Hola," & vbNewLine & "Se han planificado nuevas muestras de fuego para ensayar." & vbNewLine & "Saludos."
+            '
+            Set MItem = OutlookApp.CreateItem(olMailItem)
+            With MItem
+                .To = Correo
+                .CC = Correo2
+                .Subject = Asunto
+                .Body = Msg
+                .Send
+                '
+            End With
+            '
+        '
+End Sub
